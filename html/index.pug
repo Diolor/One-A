@@ -1,0 +1,21 @@
+doctype html
+html(lang="en")
+  head
+    link(rel="stylesheet" href="main.css")
+
+  body
+    #app.fadeIn
+      .photos-container
+      .color-overlay
+      .desk
+        #login.state.btn.middle.fadeIn.uppercase Login
+        #icognito.state.middle.fadeIn.uppercase.unselectable.hidden Icognito Mode
+        #tasksContainer
+          #one-task.task.uppercase.hidden.middle
+          .middle
+            .next-task-input.task.uppercase.hidden(contentEditable="true" placeholder="Start Something")
+          #lists-btn-wrapper.dropup
+            #selected-list.btn.uppercase.dropdown-toggle(data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+            ul#lists-tasks.dropdown-menu(aria-labelledby="dropdownMenu")
+
+  script(src="bundle.js")
