@@ -23,15 +23,6 @@ class TokenResult {
   }
 }
 
-function onWebAuthResult(onAccquired) {
-  return (redirectUrl) => {
-    let result = new TokenResult(redirectUrl)
-    if (!result.passesCsrf(config.csrfState)) {
-      return
-    }
-    getToken(result.getCode(), onAccquired)
-  }
-}
 
 function getToken(code, onAccquired) {
   l('getToken')
@@ -51,19 +42,54 @@ function getToken(code, onAccquired) {
   })
 }
 
+function onWebAuthResult(onAccquired) {
+  return (redirectUrl) => {
+    console.log(redirectUrl)
+    let result = new TokenResult(redirectUrl)
+    if (!result.passesCsrf(config.csrfState)) {
+      return
+    }
+    getToken(result.getCode(), onAccquired)
+  }
+}
+
 function launchWebAuthFlow(onAccquired, interactive) {
-  chrome
-    .identity
-    .launchWebAuthFlow(
-      config.authorizeUrl(interactive),
-      onWebAuthResult(onAccquired)
-    )
+  return new Promise((resolve, reject) => {
+      chrome
+        .identity
+        .launchWebAuthFlow(
+          config.authorizeUrl(interactive),
+          (redirectUrl) => {
+            if (chrome.runtime.lastError || redirectUrl == null) {
+              reject(new Error("No redirect url"))
+              return
+            }
+            resolve(redirectUrl)
+          }
+        )
+    })
+    .then(code => extractResponseCode(code))
+}
+
+function extractResponseCode(redirectUrl) {
+  let result = new TokenResult(redirectUrl)
+  if (!result.passesCsrf(config.csrfState)) {
+    return
+  }
+  getToken(result.getCode(), onAccquired)
+}
+
+function setLoginState(onAccquired) {
+  uiState.loginRequired(() => {
+    launchWebAuthFlow(onAccquired, true)
+      .catch(reason => l("Failed to launch login."))
+  })
 }
 
 function getUserToken(onAccquired) {
   l('getUserToken')
 
-  if(chrome.extension.inIncognitoContext){
+  if (chrome.extension.inIncognitoContext) {
     uiState.icognito()
     return
   }
@@ -74,14 +100,8 @@ function getUserToken(onAccquired) {
     return onAccquired(tokenFromStorage)
   }
 
-  try {
-    launchWebAuthFlow(onAccquired, false)
-  } catch (e) {
-    uiState.loginRequired(() => {
-      launchWebAuthFlow(onAccquired, true)
-    })
-  }
-
+  launchWebAuthFlow(onAccquired, false)
+    .catch(reason => setLoginState(onAccquired))
 }
 
 module.exports = {
