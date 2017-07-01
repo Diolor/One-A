@@ -56,17 +56,46 @@ function TaskObserver(listId) {
 
   this.loadListData = function() {
     l("loadListData")
-    self.WunderlistAPI.http.tasks
-      .forList(this.listId)
-      .done(self.handleListData)
-      .fail(handleError);
+
+    let tasks = new Promise((resolve, reject) => {
+      self.WunderlistAPI.http.tasks
+        .forList(this.listId)
+        .done(result => resolve(result))
+        .fail(error => reject(error))
+    })
+    let listPositions = new Promise((resolve, reject) => {
+      self.WunderlistAPI.http.task_positions
+        .forList(this.listId)
+        .done(result => resolve(result[0]))
+        .fail(error => reject(error))
+    })
+
+    Promise
+      .all([tasks, listPositions])
+      .then(values => {
+        let tasks = values[0]
+        let taskPositions = values[1].values
+        let task = null
+
+        l(taskPositions)
+
+        taskPositions
+          .some(taskPosition => {
+            task = tasks
+              .find(iteratedTask => {
+                return iteratedTask.id == taskPosition
+              })
+
+            return task != null
+          })
+
+        self.handleListData(task)
+      })
+      .catch(handleError)
   }
 
-  this.handleListData = function(x) {
-    l("handleListData");
-
-    var task = x[0];
-
+  this.handleListData = function(task) {
+    l("handleListData")
     if (task == undefined) {
       self.enableNextTaskInput();
     } else {

@@ -24,21 +24,23 @@ class TokenResult {
 }
 
 
-function getToken(code, onAccquired) {
+function getToken(code) {
   l('getToken')
-  $.ajax({
-    type: "POST",
-    url: config.accessTokenUrl,
-    data: config.accessTokenData(code),
-    success: (resultData) => {
-      let token = resultData.access_token
-      storage.saveTokenToLocalStorage(token)
-      uiState.loggedIn()
-      onAccquired(token)
-    },
-    error: () => {
-      l("Token acquisition failed.")
-    }
+  return new Promise((resolve, reject) => {
+    $.ajax({
+        type: "POST",
+        url: config.accessTokenUrl,
+        data: config.accessTokenData(code),
+      })
+      .done((resultData) => {
+        let token = resultData.access_token
+        storage.saveTokenToLocalStorage(token)
+        uiState.loggedIn()
+        resolve(token)
+      })
+      .fail(() => {
+        l("Token acquisition failed.")
+      })
   })
 }
 
@@ -49,7 +51,8 @@ function onWebAuthResult(onAccquired) {
     if (!result.passesCsrf(config.csrfState)) {
       return
     }
-    getToken(result.getCode(), onAccquired)
+    getToken(result.getCode())
+      .then(token => onAccquired(token))
   }
 }
 
@@ -68,18 +71,22 @@ function launchWebAuthFlow(onAccquired, interactive) {
           }
         )
     })
-    .then(code => extractResponseCode(code))
+    .then(code => extractResponseCode(code, onAccquired))
 }
 
-function extractResponseCode(redirectUrl) {
+function extractResponseCode(redirectUrl, onAccquired) {
+  l("extractResponseCode")
+
   let result = new TokenResult(redirectUrl)
   if (!result.passesCsrf(config.csrfState)) {
     return
   }
-  getToken(result.getCode(), onAccquired)
+  getToken(result.getCode())
+    .then(token => onAccquired(token))
 }
 
 function setLoginState(onAccquired) {
+  l("setLoginState")
   uiState.loginRequired(() => {
     launchWebAuthFlow(onAccquired, true)
       .catch(reason => l("Failed to launch login."))
