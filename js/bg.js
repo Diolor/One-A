@@ -13,9 +13,9 @@ let collections = [
   // '361687' // architecture
 ]
 
-let source = config.randomPhotoUrl(
-  collections[Math.floor(Math.random() * collections.length)]
-)
+let source = 'https://source.unsplash.com/collection/' +
+  collections[Math.floor(Math.random() * collections.length)] + '/'
+
 
 function drawImage(img) {
   var canvas = document.createElement("canvas");
@@ -49,27 +49,32 @@ function PhotoLoader(collectionId) {
   }
 
   this.loadNextPhoto = () => {
-    $.getJSON(source, data => {
-      let img = new Image();
+    // $.getJSON(source, data => {
+    // let imgUrl = data.urls.regular
+    let imgUrl = source
+    let img = new Image();
 
-      img.setAttribute('crossOrigin', 'anonymous');
-      img.onload = () => {
+    img.setAttribute('crossOrigin', 'anonymous');
+    img.onload = () => {
 
-        var canvas = drawImage(img)
-        var dataURL = canvas.toDataURL("image/png");
+      var canvas = drawImage(img)
+      var dataURL = canvas.toDataURL("image/png");
 
-        var base64Image = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-        var noLocalImageStored = storage.getImageFromLocalStorage() == undefined
-        storage.saveImageToLocalStorage(base64Image, data.links.html);
-        l("Photo updated")
+      var base64Image = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+      var noLocalImageStored = storage.getImageFromLocalStorage() == undefined
+      storage.saveImageToLocalStorage(
+        base64Image,
+        imgUrl //  data.links.html
+      );
+      l("Photo updated")
 
-        if (noLocalImageStored) {
-          self.init()
-        }
-      };
+      if (noLocalImageStored) {
+        self.init()
+      }
+    };
 
-      img.src = data.urls.regular
-    })
+    img.src = imgUrl
+    // })
   }
 }
 
