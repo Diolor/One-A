@@ -57,6 +57,7 @@ function setSelectedList(list) {
   selectedListDiv.show()
 
   $('#ic-list')
+    .unbind("click")
     .click(() => {
       let url = 'https://www.wunderlist.com/#/lists/' + list.id
       openUrl(url)
