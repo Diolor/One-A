@@ -75,7 +75,7 @@ function TaskObserver(listId) {
       .then(values => {
         let tasks = values[0]
         let taskPositions = values[1].values
-        let task = null
+        let task = tasks[0] // default
 
         taskPositions
           .some(taskPosition => {
