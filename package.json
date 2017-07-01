@@ -1,6 +1,6 @@
 {
   "name": "One-Focus",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Minimal plugin helping you focus in one task per time from wunderlist accompanied with beautiful backgrounds",
   "dependencies": {
     "bootstrap": "^3.3.7",
@@ -20,9 +20,11 @@
     "build:css": "npm run dist:css; uglifycss css/main.css > dist/main.css",
     "build:js": "browserify js/main.js -o dist/bundle.js",
     "build:watch": "watch 'npm run build:js' .",
+    "dist": "npm run dist:css",
     "dist:css": "npm run dist:icons; npm run dist:bootstrap",
     "dist:icons": "cp -a icons/. dist/icons",
     "dist:bootstrap": "cp node_modules/bootstrap/dist/css/bootstrap.min.css dist/bootstrap.min.css",
+    "release": "npm run dist; npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
