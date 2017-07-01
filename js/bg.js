@@ -3,16 +3,19 @@
 var l = require('./logger');
 var ui = require('./ui');
 var storage = require('./storage')
+let config = require('./config')
+let $ = require('jquery')
 
-var collections = [
+let collections = [
   '791207', // aerial
-  '573009', // Micro Worlds
+  // '573009', // Micro Worlds
   // '138584', // water
   // '361687' // architecture
 ]
 
-var source = 'https://source.unsplash.com/collection/' + collections[Math.floor(Math.random() * collections.length)] + '/'
-
+let source = config.randomPhotoUrl(
+  collections[Math.floor(Math.random() * collections.length)]
+)
 
 function drawImage(img) {
   var canvas = document.createElement("canvas");
@@ -26,41 +29,47 @@ function drawImage(img) {
 }
 
 function setPhoto() {
-  document
-    .getElementsByClassName("photos-container")[0]
-    .style
-    .backgroundImage = 'url(data:image/jpeg;charset=utf-8;base64,' + storage.getImageFromLocalStorage() + ')';
+  // document
+  //   .getElementsByClassName("photos-container")[0]
+  //   .style
+  //   .backgroundImage = 'url(data:image/jpeg;charset=utf-8;base64,' + storage.getImageFromLocalStorage() + ')';
+
+  ui.setBackgroundImage(
+    'url(data:image/jpeg;charset=utf-8;base64,' + storage.getImageFromLocalStorage() + ')',
+    storage.getImageHtmlUrlFromLocalStorage()
+  )
 }
 
 function PhotoLoader(collectionId) {
   var self = this;
 
-  this.init = function() {
+  this.init = () => {
     setPhoto()
     self.loadNextPhoto()
   }
 
-  this.loadNextPhoto = function() {
-    var img = new Image();
+  this.loadNextPhoto = () => {
+    $.getJSON(source, data => {
+      let img = new Image();
 
-    img.setAttribute('crossOrigin', 'anonymous');
+      img.setAttribute('crossOrigin', 'anonymous');
+      img.onload = () => {
 
-    img.onload = function() {
+        var canvas = drawImage(img)
+        var dataURL = canvas.toDataURL("image/png");
 
-      var canvas = drawImage(this)
-      var dataURL = canvas.toDataURL("image/png");
+        var base64Image = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        var noLocalImageStored = storage.getImageFromLocalStorage() == undefined
+        storage.saveImageToLocalStorage(base64Image, data.links.html);
+        l("Photo updated")
 
-      var base64Image = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-      var noLocalImageStored = storage.getImageFromLocalStorage() == undefined
-      storage.saveImageToLocalStorage(base64Image);
-      l("Photo updated")
+        if (noLocalImageStored) {
+          self.init()
+        }
+      };
 
-      if (noLocalImageStored) {
-        self.init()
-      }
-    };
-
-    img.src = source
+      img.src = data.urls.regular
+    })
   }
 }
 

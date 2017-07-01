@@ -51,7 +51,7 @@ function TaskObserver(listId) {
     self.listId = list.id
     storage.saveSelectedListToLocalStorage(list)
     self.loadListData()
-    ui.setSelectedListName(list.title)
+    ui.setSelectedList(list)
   }
 
   this.loadListData = function() {
@@ -76,8 +76,6 @@ function TaskObserver(listId) {
         let tasks = values[0]
         let taskPositions = values[1].values
         let task = null
-
-        l(taskPositions)
 
         taskPositions
           .some(taskPosition => {

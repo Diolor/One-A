@@ -1,9 +1,10 @@
 let imageKey = "image"
+let imageUrlKey = "imageUrl"
 let listKey = "list"
 let accessTokenKey = "accessToken"
 
 function saveToLocalStorage(key, value) {
-  localStorage.setItem(key, value);
+  localStorage.setItem(key, value)
 }
 
 function getFromLocalStorage(key) {
@@ -18,12 +19,17 @@ function getTokenFromLocalStorage() {
   return getFromLocalStorage(accessTokenKey);
 }
 
-function saveImageToLocalStorage(base64Image) {
-  saveToLocalStorage(imageKey, base64Image);
+function saveImageToLocalStorage(base64Image, imageUrl) {
+  saveToLocalStorage(imageKey, base64Image)
+  saveToLocalStorage(imageUrlKey, imageUrl)
 }
 
 function getImageFromLocalStorage() {
   return getFromLocalStorage(imageKey);
+}
+
+function getImageHtmlUrlFromLocalStorage() {
+  return getFromLocalStorage(imageUrlKey);
 }
 
 function saveSelectedListToLocalStorage(list) {
@@ -47,5 +53,6 @@ module.exports = {
   saveImageToLocalStorage: saveImageToLocalStorage,
   getImageFromLocalStorage: getImageFromLocalStorage,
   saveSelectedListToLocalStorage: saveSelectedListToLocalStorage,
-  getSelectedListFromLocalStorage: getSelectedListFromLocalStorage
+  getSelectedListFromLocalStorage: getSelectedListFromLocalStorage,
+  getImageHtmlUrlFromLocalStorage: getImageHtmlUrlFromLocalStorage
 }

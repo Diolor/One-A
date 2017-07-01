@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="77px" viewBox="0 0 100 77" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="noun_476_cc" fill-rule="nonzero" fill="#ffffff">
+            <path d="M50,32 C42.832,32 37,37.832 37,45 C37,52.168 42.832,58 50,58 C57.168,58 63,52.168 63,45 C63,37.832 57.168,32 50,32 Z" id="Shape"></path>
+            <path d="M87,13 L72,13 C72,5.82 66.18,0 59,0 L41,0 C33.82,0 28,5.82 28,13 L13,13 C5.82,13 0,18.82 0,26 L0,64 C0,71.18 5.82,77 13,77 L87,77 C94.18,77 100,71.18 100,64 L100,26 C100,18.82 94.18,13 87,13 Z M50,68 C37.317,68 27,57.682 27,45 C27,32.318 37.317,22 50,22 C62.683,22 73,32.318 73,45 C73,57.682 62.683,68 50,68 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>

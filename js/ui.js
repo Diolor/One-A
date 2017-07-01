@@ -28,8 +28,9 @@ function getTaksContainer() {
   return $("#tasksContainer")
 }
 
-function setBackgroundImage(imageurl) {
-  $("#photos-container").css("background-image", imageurl)
+function setBackgroundImage(backgroundImageDataUrl, imageHtmlUrl) {
+  $(".photos-container").css("background-image", backgroundImageDataUrl)
+  $('#ic-camera').click(() => openUrl(imageHtmlUrl))
 }
 
 function setLists(lists, onListSelected) {
@@ -50,10 +51,22 @@ function addItemToList(ul, list, onListSelected) {
   item.appendTo(ul)
 }
 
-function setSelectedListName(name) {
-  var selectedListDiv = getSelectedListDiv()
-  selectedListDiv.html(name)
+function setSelectedList(list) {
+  let selectedListDiv = getSelectedListDiv()
+  selectedListDiv.html(list.title)
   selectedListDiv.show()
+
+  $('#ic-list')
+    .click(() => {
+      let url = 'https://www.wunderlist.com/#/lists/' + list.id
+      openUrl(url)
+    })
+}
+
+function openUrl(url) {
+  window
+    .open(url, '_blank')
+    .focus()
 }
 
 function setTaskName(taskTitle) {
@@ -134,7 +147,7 @@ module.exports = {
   setOnEnterSaveListener: setOnEnterSaveListener,
   setTaskClickListener: setTaskClickListener,
   setLoginClickListener: setLoginClickListener,
-  setSelectedListName: setSelectedListName,
+  setSelectedList: setSelectedList,
   setLists: setLists,
   setBackgroundImage: setBackgroundImage
 }

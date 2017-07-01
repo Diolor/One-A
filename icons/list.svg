@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80px" height="70px" viewBox="0 0 80 70" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45 (43475) - http://www.bohemiancoding.com/sketch -->
+    <title>list</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="list" fill-rule="nonzero" fill="#FFFFFF">
+            <polygon id="Rectangle-path" points="20 0 80 0 80 10 20 10"></polygon>
+            <polygon id="Rectangle-path" points="20 20 80 20 80 30 20 30"></polygon>
+            <polygon id="Rectangle-path" points="20 40 80 40 80 50 20 50"></polygon>
+            <polygon id="Rectangle-path" points="20 60 80 60 80 70 20 70"></polygon>
+            <polygon id="Rectangle-path" points="0 0 10 0 10 10 0 10"></polygon>
+            <polygon id="Rectangle-path" points="0 20 10 20 10 30 0 30"></polygon>
+            <polygon id="Rectangle-path" points="0 40 10 40 10 50 0 50"></polygon>
+            <polygon id="Rectangle-path" points="0 60 10 60 10 70 0 70"></polygon>
+        </g>
+    </g>
+</svg>

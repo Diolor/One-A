@@ -17,9 +17,12 @@
     "start": "npm run watch & nodemon",
     "build": "npm run build:html | npm run build:css | npm run build:js",
     "build:html": "pug -o dist/ html/index.pug",
-    "build:css": "cp node_modules/bootstrap/dist/css/bootstrap.min.css dist/bootstrap.min.css ; uglifycss css/main.css > dist/main.css",
+    "build:css": "npm run dist:css; uglifycss css/main.css > dist/main.css",
     "build:js": "browserify js/main.js -o dist/bundle.js",
     "build:watch": "watch 'npm run build:js' .",
+    "dist:css": "npm run dist:icons; npm run dist:bootstrap",
+    "dist:icons": "cp -a icons/. dist/icons",
+    "dist:bootstrap": "cp node_modules/bootstrap/dist/css/bootstrap.min.css dist/bootstrap.min.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

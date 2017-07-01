@@ -211,6 +211,28 @@ body {
   user-select: none;
 }
 
+.ic {
+  cursor: pointer;
+  padding: 11px;
+  width: 40px;
+  height: 40px;
+  opacity: 0.5;
+  position: absolute;
+  bottom: 3px;
+}
+
+.ic:hover {
+  opacity: 0.8;
+}
+
+#ic-list {
+  right: 4px;
+}
+
+#ic-camera {
+  left: 4px;
+}
+
 @-webkit-keyframes fadeIn {
   0% {
     opacity: 0
